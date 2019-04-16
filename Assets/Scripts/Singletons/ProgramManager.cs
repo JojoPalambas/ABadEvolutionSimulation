@@ -30,16 +30,31 @@ public class ProgramManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown("escape"))
+        {
+            if (status == Status.main_menu)
+            {
+                Quit();
+            }
+            else
+            {
+                MainMenu();
+            }
+        }
     }
 
     public void MainMenu()
     {
-        status = Status.main_menu;
+        this.status = Status.main_menu;
+        if (CameraManager.instance)
+            CameraManager.instance.ChangeProgramStatus(status);
     }
 
     public void Survival()
     {
-        status = Status.survival;
+        this.status = Status.survival;
+        if (CameraManager.instance)
+            CameraManager.instance.ChangeProgramStatus(status);
     }
 
     public void Quit()

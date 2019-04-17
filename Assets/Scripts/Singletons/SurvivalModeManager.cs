@@ -14,6 +14,7 @@ public class SurvivalModeManager : MonoBehaviour
     }
 
     public Tilemap tilemap;
+    public MapManager mapManager;
 
     public GameObject mousePrefab;
     private List<Mouse> mice;
@@ -33,13 +34,15 @@ public class SurvivalModeManager : MonoBehaviour
         }
         instance = this;
 
+        mapManager = new MapManager(tilemap);
+
         status = Status.starting;
         waitingTime = SurvivalModeConstants.startingTime;
 
         mice = new List<Mouse>();
         for (int i = 0; i < SurvivalModeConstants.miceNumber; i++)
         {
-            mice.Add(Instantiate(mousePrefab, SurvivalModeConstants.miceStartingPosition, new Quaternion()).GetComponent<Mouse>());
+            mice.Add(Instantiate(mousePrefab, mapManager.mapPositionToWorldPosition(SurvivalModeConstants.miceStartingPosition), new Quaternion()).GetComponent<Mouse>());
         }
     }
 
@@ -89,7 +92,7 @@ public class SurvivalModeManager : MonoBehaviour
     {
         foreach (Mouse mouse in mice)
         {
-            mouse.SetTarget(mouse.transform.position + new Vector3(0, 1, 0), SurvivalModeConstants.animationTime);
+            mouse.SetTarget(mapManager.GetNextPosition(mouse.GetMapPosition()), SurvivalModeConstants.animationTime);
         }
     }
 
@@ -105,7 +108,8 @@ public class SurvivalModeManager : MonoBehaviour
     {
         foreach (Mouse mouse in mice)
         {
-            mouse.transform.position = SurvivalModeConstants.miceStartingPosition;
+            mouse.SetTarget(SurvivalModeConstants.miceStartingPosition, SurvivalModeConstants.animationTime);
+            mouse.FixPositionToTarget();
         }
     }
 

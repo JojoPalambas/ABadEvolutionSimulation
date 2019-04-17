@@ -73,11 +73,14 @@ public class ProgramManager : MonoBehaviour
         if (CameraManager.instance)
             CameraManager.instance.ChangeProgramStatus(status);
 
+        survivalModeManagerPrefab.GetComponent<SurvivalModeManager>().tilemap = survivalTileMap;
         GameObject survivalModeManager = Instantiate(survivalModeManagerPrefab, new Vector3(), new Quaternion());
+        /*
         if (survivalModeManager != null)
         {
             survivalModeManager.GetComponent<SurvivalModeManager>().tilemap = survivalTileMap;
         }
+        */
     }
 
     public void Quit()

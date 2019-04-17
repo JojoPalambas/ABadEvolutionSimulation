@@ -20,5 +20,22 @@ public class Mouse : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (timeToTarget > 0f)
+        {
+            transform.Translate((target - transform.position) * (Time.deltaTime / timeToTarget));
+            timeToTarget -= Time.deltaTime;
+        }
+    }
+
+    public void SetTarget(Vector3 target, float timeToTarget)
+    {
+        this.target = target;
+        this.timeToTarget = timeToTarget;
+    }
+
+    public void FixPositionToTarget()
+    {
+        this.transform.position = target;
+        this.timeToTarget = -1f;
     }
 }

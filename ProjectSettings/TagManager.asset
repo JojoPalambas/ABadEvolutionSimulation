@@ -41,3 +41,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Ground
+    uniqueID: 1042541735
+    locked: 0
+  - name: Creatures
+    uniqueID: 3747100213
+    locked: 0

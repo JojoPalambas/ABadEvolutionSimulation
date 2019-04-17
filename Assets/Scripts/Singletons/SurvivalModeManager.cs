@@ -92,7 +92,8 @@ public class SurvivalModeManager : MonoBehaviour
     {
         foreach (Mouse mouse in mice)
         {
-            mouse.SetTarget(mapManager.GetNextPosition(mouse.GetMapPosition()), SurvivalModeConstants.animationTime);
+            PositionDirection nextMove = mapManager.GetNextPosition(mouse.GetMapPosition(), mouse.direction);
+            mouse.SetTarget(nextMove.position, SurvivalModeConstants.animationTime, nextMove.direction);
         }
     }
 
@@ -108,7 +109,7 @@ public class SurvivalModeManager : MonoBehaviour
     {
         foreach (Mouse mouse in mice)
         {
-            mouse.SetTarget(SurvivalModeConstants.miceStartingPosition, SurvivalModeConstants.animationTime);
+            mouse.SetTarget(SurvivalModeConstants.miceStartingPosition, SurvivalModeConstants.animationTime, MapManager.Direction.none);
             mouse.FixPositionToTarget();
         }
     }

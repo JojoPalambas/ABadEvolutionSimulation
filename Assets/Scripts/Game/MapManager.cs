@@ -3,6 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+public class PositionDirection
+{
+    public Vector2Int position;
+    public MapManager.Direction direction;
+
+    public PositionDirection(Vector2Int position, MapManager.Direction direction)
+    {
+        this.position = position;
+        this.direction = direction;
+    }
+}
+
 public class MapManager
 {
     public enum TileType
@@ -36,8 +48,7 @@ public class MapManager
         if (sprite == null)
         {
             return TileType.none;
-        }
-        Debug.Log(sprite.name);
+        };
         if (sprite.name == "tileset_0")
         {
             return TileType.wall;
@@ -62,33 +73,33 @@ public class MapManager
         return tilemap.GetCellCenterWorld(new Vector3Int(mapPosition.x, mapPosition.y, 0));
     }
 
-    public Vector2Int GetNextPosition(Vector2Int position)
+    public PositionDirection GetNextPosition(Vector2Int position, Direction lastDirection)
     {
-        Direction direction = GetNextDirection(position);
+        Direction direction = GetNextDirection(position, lastDirection);
 
         if (direction == Direction.up)
         {
-            return position + new Vector2Int(0, 1);
+            return new PositionDirection(position + new Vector2Int(0, 1), Direction.up);
         }
         if (direction == Direction.down)
         {
-            return position + new Vector2Int(0, -1);
+            return new PositionDirection(position + new Vector2Int(0, -1), Direction.down);
         }
         if (direction == Direction.left)
         {
-            return position + new Vector2Int(-1, 0);
+            return new PositionDirection(position + new Vector2Int(-1, 0), Direction.left);
         }
         if (direction == Direction.right)
         {
-            return position + new Vector2Int(1, 0);
+            return new PositionDirection(position + new Vector2Int(1, 0), Direction.right);
         }
         Debug.LogWarning("Cannot move!");
-        return position;
+        return new PositionDirection(position, Direction.none);
     }
 
-    public Direction GetNextDirection(Vector2Int position)
+    public Direction GetNextDirection(Vector2Int position, Direction direction)
     {
-        List<Direction> possibleDirections = GetPossibleDirections(position);
+        List<Direction> possibleDirections = GetPossibleDirections(position, direction);
 
         if (possibleDirections.Count <= 0)
         {
@@ -99,23 +110,23 @@ public class MapManager
         return possibleDirections[rand];
     }
 
-    public List<Direction> GetPossibleDirections(Vector2Int position)
+    public List<Direction> GetPossibleDirections(Vector2Int position, Direction direction)
     {
         List<Direction> possibleDirections = new List<Direction>(); ;
 
-        if (GetTileType(position + new Vector2Int(0, 1)) != TileType.wall)
+        if (GetTileType(position + new Vector2Int(0, 1)) != TileType.wall && direction != Direction.down)
         {
             possibleDirections.Add(Direction.up);
         }
-        if (GetTileType(position + new Vector2Int(0, -1)) != TileType.wall)
+        if (GetTileType(position + new Vector2Int(0, -1)) != TileType.wall && direction != Direction.up)
         {
             possibleDirections.Add(Direction.down);
         }
-        if (GetTileType(position + new Vector2Int(-1, 0)) != TileType.wall)
+        if (GetTileType(position + new Vector2Int(-1, 0)) != TileType.wall && direction != Direction.right)
         {
             possibleDirections.Add(Direction.left);
         }
-        if (GetTileType(position + new Vector2Int(1, 0)) != TileType.wall)
+        if (GetTileType(position + new Vector2Int(1, 0)) != TileType.wall && direction != Direction.left)
         {
             possibleDirections.Add(Direction.right);
         }

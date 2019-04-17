@@ -6,6 +6,7 @@ public class Mouse : MonoBehaviour
 {
     public int hp;
 
+    public MapManager.Direction direction;
     private Vector2Int mapPosition;
     private Vector2Int mapTarget;
     private Vector3 worldTarget;
@@ -14,8 +15,6 @@ public class Mouse : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("Mouse created");
-
         timeToTarget = -1f;
     }
 
@@ -29,11 +28,12 @@ public class Mouse : MonoBehaviour
         }
     }
 
-    public void SetTarget(Vector2Int target, float timeToTarget)
+    public void SetTarget(Vector2Int target, float timeToTarget, MapManager.Direction direction)
     {
         this.mapTarget = target;
         this.worldTarget = SurvivalModeManager.instance.mapManager.mapPositionToWorldPosition(target);
         this.timeToTarget = timeToTarget;
+        this.direction = direction;
     }
 
     public void FixPositionToTarget()

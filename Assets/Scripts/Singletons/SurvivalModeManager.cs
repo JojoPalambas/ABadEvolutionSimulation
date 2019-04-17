@@ -5,7 +5,10 @@ using UnityEngine.Tilemaps;
 
 public class SurvivalModeManager : MonoBehaviour
 {
-    public Tilemap tilemap; 
+    public Tilemap tilemap;
+
+    public GameObject mousePrefab;
+    private List<Mouse> mice;
 
     public static SurvivalModeManager instance;
 
@@ -19,7 +22,12 @@ public class SurvivalModeManager : MonoBehaviour
         }
         instance = this;
 
-        Debug.Log("Survival mode started");
+        mice = new List<Mouse>();
+
+        for (int i = 0; i < SurvivalModeConstants.miceNumber; i++)
+        {
+            mice.Add(Instantiate(mousePrefab, SurvivalModeConstants.miceStartingPosition, new Quaternion()).GetComponent<Mouse>());
+        }
     }
 
     // Update is called once per frame
@@ -29,6 +37,10 @@ public class SurvivalModeManager : MonoBehaviour
 
     public void Cleanup()
     {
+        foreach (Mouse mouse in mice)
+        {
+            Destroy(mouse.gameObject);
+        }
     }
 
     public void Remove()

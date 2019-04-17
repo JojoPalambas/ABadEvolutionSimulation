@@ -43,5 +43,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2532c6404671b04691dc4d2ee4d7e11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grid: {fileID: 0}
   tilemap: {fileID: 0}
+  mousePrefab: {fileID: 6474316428934777096, guid: b76942e9a4a21834ba961e6c9f60bbcc,
+    type: 3}

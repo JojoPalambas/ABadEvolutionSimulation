@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class ProgramManager : MonoBehaviour
 {
@@ -9,6 +10,10 @@ public class ProgramManager : MonoBehaviour
         main_menu,
         survival
     }
+
+    [Header("Survival mode instanciation")]
+    public GameObject survivalModeManagerPrefab;
+    public Tilemap survivalTileMap;
 
     public static ProgramManager instance;
 
@@ -43,8 +48,18 @@ public class ProgramManager : MonoBehaviour
         }
     }
 
+    private void Cleanup()
+    {
+        if (SurvivalModeManager.instance != null)
+        {
+            SurvivalModeManager.instance.Remove();
+        }
+    }
+
     public void MainMenu()
     {
+        Cleanup();
+
         this.status = Status.main_menu;
         if (CameraManager.instance)
             CameraManager.instance.ChangeProgramStatus(status);
@@ -52,13 +67,23 @@ public class ProgramManager : MonoBehaviour
 
     public void Survival()
     {
+        Cleanup();
+
         this.status = Status.survival;
         if (CameraManager.instance)
             CameraManager.instance.ChangeProgramStatus(status);
+
+        GameObject survivalModeManager = Instantiate(survivalModeManagerPrefab, new Vector3(), new Quaternion());
+        if (survivalModeManager != null)
+        {
+            survivalModeManager.GetComponent<SurvivalModeManager>().tilemap = survivalTileMap;
+        }
     }
 
     public void Quit()
     {
+        Cleanup();
+
         Application.Quit();
     }
 }

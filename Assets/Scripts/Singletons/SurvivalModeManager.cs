@@ -5,7 +5,6 @@ using UnityEngine.Tilemaps;
 
 public class SurvivalModeManager : MonoBehaviour
 {
-    public Grid grid;
     public Tilemap tilemap; 
 
     public static SurvivalModeManager instance;
@@ -20,12 +19,7 @@ public class SurvivalModeManager : MonoBehaviour
         }
         instance = this;
 
-        for (int i = 0; i < 10; i++)
-        {
-            for (int j = 0; j < 10; j++)
-            {
-            }
-        }
+        Debug.Log("Survival mode started");
     }
 
     // Update is called once per frame
@@ -33,8 +27,13 @@ public class SurvivalModeManager : MonoBehaviour
     {
     }
 
+    public void Cleanup()
+    {
+    }
+
     public void Remove()
     {
+        Cleanup();
         instance = null;
         Destroy(gameObject);
     }

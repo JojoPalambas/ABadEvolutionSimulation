@@ -68,6 +68,12 @@ public class SurvivalModeManager : MonoBehaviour
             {
                 FixMicePositions();
                 HurtMice();
+                if (HasGameEnded())
+                {
+                    status = Status.ending;
+                    waitingTime = SurvivalModeConstants.endingTime;
+                    return;
+                }
 
                 waitingTime = SurvivalModeConstants.decisionTime;
                 status = Status.waitingForDecision;
@@ -84,6 +90,10 @@ public class SurvivalModeManager : MonoBehaviour
             if (status == Status.ending)
             {
                 NextGeneration();
+
+                waitingTime = SurvivalModeConstants.startingTime;
+                status = Status.starting;
+                return;
             }
         }
         else
@@ -122,10 +132,21 @@ public class SurvivalModeManager : MonoBehaviour
         }
     }
 
+    private bool HasGameEnded()
+    {
+        foreach (Mouse mouse in mice)
+        {
+            if (!mouse.IsDead())
+                return false;
+        }
+        return true;
+    }
+
     private void NextGeneration()
     {
         foreach (Mouse mouse in mice)
         {
+            mouse.Reset();
             mouse.SetTarget(SurvivalModeConstants.miceStartingPosition, SurvivalModeConstants.animationTime, MapManager.Direction.none);
             mouse.FixPositionToTarget();
         }

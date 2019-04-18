@@ -29,6 +29,8 @@ public class Mouse : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        hp = 10;
+        survivedRound = 0;
         timeToTarget = -1f;
     }
 
@@ -44,7 +46,7 @@ public class Mouse : MonoBehaviour
 
     public void SetTarget(Vector2Int target, float timeToTarget, MapManager.Direction direction)
     {
-        if (hp < 0)
+        if (IsDead())
             return;
 
         this.mapTarget = target;
@@ -68,7 +70,7 @@ public class Mouse : MonoBehaviour
 
     public bool IsDead()
     {
-        return hp < 0;
+        return hp <= 0;
     }
 
     public void Die()
@@ -84,5 +86,12 @@ public class Mouse : MonoBehaviour
     public Vector2Int GetMapPosition()
     {
         return mapPosition;
+    }
+
+    public void Reset()
+    {
+        hp = SurvivalModeConstants.mouseHp;
+        survivedRound = 0;
+        dna = new List<DNAElement>();
     }
 }

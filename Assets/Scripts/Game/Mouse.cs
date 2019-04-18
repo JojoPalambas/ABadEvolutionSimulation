@@ -4,13 +4,45 @@ using UnityEngine;
 
 public class DNAElement
 {
-    public int strength;
+    public double strength;
     public MapManager.Direction direction;
 
-    public DNAElement(int strength, MapManager.Direction direction)
+    public DNAElement(double strength, MapManager.Direction direction)
     {
         this.strength = strength;
         this.direction = direction;
+    }
+
+    public DNAElement Copy()
+    {
+        return new DNAElement(strength, direction);
+    }
+}
+
+public class DNA
+{
+    public double totalStrength;
+    public List<DNAElement> elements;
+
+    public DNA(List<DNAElement> elements)
+    {
+        this.elements = elements;
+
+        totalStrength = 0;
+        foreach (DNAElement elt in elements)
+        {
+            totalStrength += elt.strength;
+        }
+    }
+
+    public DNA DeepCopy()
+    {
+        List<DNAElement> elementsCopy = new List<DNAElement>();
+        foreach (DNAElement elt in elements)
+        {
+            elementsCopy.Add(elt.Copy());
+        }
+        return new DNA(elementsCopy);
     }
 }
 
@@ -24,7 +56,7 @@ public class Mouse : MonoBehaviour
 
     public int survivedRound;
     public int hp;
-    public List<DNAElement> dna;
+    public DNA dna;
 
     // Start is called before the first frame update
     void Start()
@@ -57,8 +89,8 @@ public class Mouse : MonoBehaviour
         this.direction = direction;
 
         if (dna == null)
-            dna = new List<DNAElement>();
-        dna.Add(new DNAElement(1, direction));
+            dna = new DNA(new List<DNAElement>());
+        dna.elements.Add(new DNAElement(1, direction));
     }
 
     public void FixPositionToTarget()
@@ -88,10 +120,10 @@ public class Mouse : MonoBehaviour
         return mapPosition;
     }
 
-    public void Reset()
+    public void Reset(DNA dna)
     {
         hp = SurvivalModeConstants.mouseHp;
         survivedRound = 0;
-        dna = new List<DNAElement>();
+        dna = dna.DeepCopy();
     }
 }

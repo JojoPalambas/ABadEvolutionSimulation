@@ -144,12 +144,25 @@ public class SurvivalModeManager : MonoBehaviour
 
     private void NextGeneration()
     {
+        Mouse best = GetBestMouse();
         foreach (Mouse mouse in mice)
         {
-            mouse.Reset();
+            mouse.Reset(best.dna);
             mouse.SetTarget(SurvivalModeConstants.miceStartingPosition, SurvivalModeConstants.animationTime, MapManager.Direction.none);
             mouse.FixPositionToTarget();
         }
+    }
+
+    private Mouse GetBestMouse()
+    {
+        Mouse best = mice[0];
+
+        foreach (Mouse mouse in mice)
+        {
+            if (mouse.survivedRound > best.survivedRound)
+                best = mouse;
+        }
+        return best;
     }
 
     public void Cleanup()

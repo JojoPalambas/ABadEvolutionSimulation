@@ -67,6 +67,7 @@ public class SurvivalModeManager : MonoBehaviour
             if (status == Status.waitingForAnimations)
             {
                 FixMicePositions();
+                HurtMice();
 
                 waitingTime = SurvivalModeConstants.decisionTime;
                 status = Status.waitingForDecision;
@@ -106,6 +107,18 @@ public class SurvivalModeManager : MonoBehaviour
         foreach (Mouse mouse in mice)
         {
             mouse.FixPositionToTarget();
+        }
+    }
+
+    private void HurtMice()
+    {
+        foreach (Mouse mouse in mice)
+        {
+            MapManager.TileType tile = mapManager.GetTileType(mouse.GetMapPosition());
+            if (tile == MapManager.TileType.lava)
+                mouse.Die();
+            else if (tile == MapManager.TileType.spikes)
+                mouse.hurt(1);
         }
     }
 

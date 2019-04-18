@@ -30,7 +30,6 @@ public class Mouse : MonoBehaviour
     void Start()
     {
         timeToTarget = -1f;
-        dna = new List<DNAElement>();
     }
 
     // Update is called once per frame
@@ -55,6 +54,8 @@ public class Mouse : MonoBehaviour
         this.timeToTarget = timeToTarget;
         this.direction = direction;
 
+        if (dna == null)
+            dna = new List<DNAElement>();
         dna.Add(new DNAElement(1, direction));
     }
 

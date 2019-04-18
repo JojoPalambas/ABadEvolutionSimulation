@@ -42,7 +42,11 @@ public class SurvivalModeManager : MonoBehaviour
         mice = new List<Mouse>();
         for (int i = 0; i < SurvivalModeConstants.miceNumber; i++)
         {
-            mice.Add(Instantiate(mousePrefab, mapManager.mapPositionToWorldPosition(SurvivalModeConstants.miceStartingPosition), new Quaternion()).GetComponent<Mouse>());
+            GameObject mouseObject = Instantiate(mousePrefab, mapManager.mapPositionToWorldPosition(SurvivalModeConstants.miceStartingPosition), new Quaternion());
+            Mouse mouse = mouseObject.GetComponent<Mouse>();
+            mice.Add(mouse);
+            mouse.SetTarget(SurvivalModeConstants.miceStartingPosition, SurvivalModeConstants.animationTime, MapManager.Direction.none);
+            mouse.FixPositionToTarget();
         }
     }
 

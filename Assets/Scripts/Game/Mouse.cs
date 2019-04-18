@@ -53,8 +53,7 @@ public class Mouse : MonoBehaviour
     private Vector2Int mapTarget;
     private Vector3 worldTarget;
     private float timeToTarget;
-
-    public int survivedRound;
+    
     public int hp;
     public DNA dna;
 
@@ -62,7 +61,6 @@ public class Mouse : MonoBehaviour
     void Start()
     {
         hp = 10;
-        survivedRound = 0;
         timeToTarget = -1f;
     }
 
@@ -91,6 +89,7 @@ public class Mouse : MonoBehaviour
         if (dna == null)
             dna = new DNA(new List<DNAElement>());
         dna.elements.Add(new DNAElement(1, direction));
+        Debug.Log(dna.elements.Count);
     }
 
     public void FixPositionToTarget()
@@ -120,10 +119,20 @@ public class Mouse : MonoBehaviour
         return mapPosition;
     }
 
-    public void Reset(DNA dna)
+    public void Reset(DNA dna, Vector2Int position)
     {
+        // Ressetting target position
+        this.mapTarget = position;
+        Vector3 imprecision = new Vector3(Random.Range(-SurvivalModeManager.instance.mapManager.tilemap.cellSize.x / 4, SurvivalModeManager.instance.mapManager.tilemap.cellSize.x / 4),
+                                          Random.Range(-SurvivalModeManager.instance.mapManager.tilemap.cellSize.y / 4, SurvivalModeManager.instance.mapManager.tilemap.cellSize.y / 4), 0);
+        this.worldTarget = SurvivalModeManager.instance.mapManager.mapPositionToWorldPosition(position) + imprecision;
+        
+        // Fixing the position
+        this.mapPosition = mapTarget;
+        this.transform.position = worldTarget;
+        this.timeToTarget = -1f;
+
         hp = SurvivalModeConstants.mouseHp;
-        survivedRound = 0;
-        dna = dna.DeepCopy();
+        this.dna = dna.DeepCopy();
     }
 }

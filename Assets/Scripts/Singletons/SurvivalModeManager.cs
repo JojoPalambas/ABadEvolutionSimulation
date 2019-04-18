@@ -147,9 +147,7 @@ public class SurvivalModeManager : MonoBehaviour
         Mouse best = GetBestMouse();
         foreach (Mouse mouse in mice)
         {
-            mouse.Reset(best.dna);
-            mouse.SetTarget(SurvivalModeConstants.miceStartingPosition, SurvivalModeConstants.animationTime, MapManager.Direction.none);
-            mouse.FixPositionToTarget();
+            mouse.Reset(best.dna, SurvivalModeConstants.miceStartingPosition);
         }
     }
 
@@ -159,7 +157,7 @@ public class SurvivalModeManager : MonoBehaviour
 
         foreach (Mouse mouse in mice)
         {
-            if (mouse.survivedRound > best.survivedRound)
+            if (mouse.dna.elements.Count > best.dna.elements.Count)
                 best = mouse;
         }
         return best;

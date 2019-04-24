@@ -111,8 +111,10 @@ public class SurvivalModeManager : MonoBehaviour
     {
         foreach (Mouse mouse in mice)
         {
+            if (mouse.IsDead())
+                continue;
+
             PositionDirection nextMove = mouse.GetNextPosition();
-            Debug.Log("DNA : " + mouse.dna.ToString());
             mouse.SetTarget(nextMove.position, SurvivalModeConstants.animationTime, nextMove.direction);
         }
     }

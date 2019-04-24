@@ -81,8 +81,15 @@ public class Mouse : MonoBehaviour
     {
         if (timeToTarget > 0f)
         {
-            transform.Translate((worldTarget - transform.position) * (Time.deltaTime / timeToTarget));
+            Vector3 translation = (worldTarget - transform.position) * (Time.deltaTime / timeToTarget);
+            transform.Translate(translation);
             timeToTarget -= Time.deltaTime;
+
+            // Ajust the sprite direction
+            if (translation.x < 0)
+                transform.localScale = new Vector3(1, 1, 1);
+            else
+                transform.localScale = new Vector3(-1, 1, 1);
         }
     }
 

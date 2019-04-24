@@ -45,7 +45,7 @@ public class DNA
         return new DNA(elementsCopy);
     }
 
-    public string ToString()
+    public override string ToString()
     {
         string ret = "[ ";
         foreach (DNAElement e in elements)
@@ -167,7 +167,7 @@ public class Mouse : MonoBehaviour
         }
     }
 
-    public void Reset(DNA dna, Vector2Int position)
+    public void Reset(DNA dna, Vector2Int position, bool randomize)
     {
         spriteAnimator.Play("Ork2Wait");
 
@@ -184,7 +184,9 @@ public class Mouse : MonoBehaviour
 
         hp = SurvivalModeConstants.mouseHp;
         this.dna = dna.DeepCopy();
-        RandomizeDNA();
+
+        if (randomize)
+            RandomizeDNA();
     }
 
     public void RandomizeDNA()

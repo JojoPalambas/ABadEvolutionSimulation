@@ -160,9 +160,12 @@ public class SurvivalModeManager : MonoBehaviour
     {
         round = 0;
         Mouse best = GetBestMouse();
-        foreach (Mouse mouse in mice)
+        for (int i = 0; i < mice.Count; i++)
         {
-            mouse.Reset(best.dna, SurvivalModeConstants.miceStartingPosition);
+            if (i == 0)
+                mice[i].Reset(best.dna, SurvivalModeConstants.miceStartingPosition, false);
+            else
+                mice[i].Reset(best.dna, SurvivalModeConstants.miceStartingPosition, true);
         }
     }
 

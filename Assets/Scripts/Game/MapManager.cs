@@ -68,6 +68,12 @@ public class MapManager
         return TileType.none;
     }
 
+    public bool IsTileValid(Vector2Int position)
+    {
+        TileType type = GetTileType(position);
+        return type != TileType.wall && type != TileType.none;
+    }
+
     public Vector3 mapPositionToWorldPosition(Vector2Int mapPosition)
     {
         return tilemap.GetCellCenterWorld(new Vector3Int(mapPosition.x, mapPosition.y, 0));
@@ -77,24 +83,7 @@ public class MapManager
     {
         Direction direction = GetNextDirection(position, lastDirection);
 
-        if (direction == Direction.up)
-        {
-            return new PositionDirection(position + new Vector2Int(0, 1), Direction.up);
-        }
-        if (direction == Direction.down)
-        {
-            return new PositionDirection(position + new Vector2Int(0, -1), Direction.down);
-        }
-        if (direction == Direction.left)
-        {
-            return new PositionDirection(position + new Vector2Int(-1, 0), Direction.left);
-        }
-        if (direction == Direction.right)
-        {
-            return new PositionDirection(position + new Vector2Int(1, 0), Direction.right);
-        }
-        Debug.LogWarning("Cannot move!");
-        return new PositionDirection(position, Direction.none);
+        return new PositionDirection(MovePosition(position, direction), direction);
     }
 
     public Direction GetNextDirection(Vector2Int position, Direction direction)
@@ -132,5 +121,25 @@ public class MapManager
         }
 
         return possibleDirections;
+    }
+
+    public bool IsMoveValid(Vector2Int position, Direction direction)
+    {
+        return IsTileValid(MovePosition(position, direction));
+    }
+
+    public static Vector2Int MovePosition(Vector2Int position, Direction direction)
+    {
+        if (direction == Direction.up)
+            return position + new Vector2Int(0, 1);
+        if (direction == Direction.down)
+            return position + new Vector2Int(0, -1);
+        if (direction == Direction.left)
+            return position + new Vector2Int(-1, 0);
+        if (direction == Direction.right)
+            return position + new Vector2Int(1, 0);
+
+        Debug.LogWarning("MapManager.MovePosition failed");
+        return position;
     }
 }

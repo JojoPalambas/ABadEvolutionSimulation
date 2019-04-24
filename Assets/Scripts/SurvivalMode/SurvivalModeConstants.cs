@@ -11,6 +11,6 @@ public abstract class SurvivalModeConstants
 
     public static readonly int mouseHp = 5;
 
-    public static readonly int miceNumber = 100;
+    public static readonly int miceNumber = 1;
     public static readonly Vector2Int miceStartingPosition = new Vector2Int(0, 0);
 }

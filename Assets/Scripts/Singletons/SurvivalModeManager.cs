@@ -111,7 +111,8 @@ public class SurvivalModeManager : MonoBehaviour
     {
         foreach (Mouse mouse in mice)
         {
-            PositionDirection nextMove = mapManager.GetNextPosition(mouse.GetMapPosition(), mouse.direction);
+            PositionDirection nextMove = mouse.GetNextPosition();
+            Debug.Log("DNA : " + mouse.dna.ToString());
             mouse.SetTarget(nextMove.position, SurvivalModeConstants.animationTime, nextMove.direction);
         }
     }
@@ -148,6 +149,7 @@ public class SurvivalModeManager : MonoBehaviour
 
     private void NextGeneration()
     {
+        round = 0;
         Mouse best = GetBestMouse();
         foreach (Mouse mouse in mice)
         {

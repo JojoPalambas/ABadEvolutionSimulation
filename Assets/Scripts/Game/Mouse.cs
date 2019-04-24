@@ -44,6 +44,16 @@ public class DNA
         }
         return new DNA(elementsCopy);
     }
+
+    public string ToString()
+    {
+        string ret = "[ ";
+        foreach (DNAElement e in elements)
+        {
+            ret += e.direction.ToString() + " ";
+        }
+        return ret + "]";
+    }
 }
 
 public class Mouse : MonoBehaviour
@@ -92,7 +102,6 @@ public class Mouse : MonoBehaviour
 
         if (dna == null)
             dna = new DNA(new List<DNAElement>());
-        dna.elements.Add(new DNAElement(1, direction));
     }
 
     public void FixPositionToTarget()
@@ -136,11 +145,34 @@ public class Mouse : MonoBehaviour
         return mapPosition;
     }
 
+    public PositionDirection GetNextPosition()
+    {
+        int round = SurvivalModeManager.instance.GetRound();
+        // If DNA is written for this round
+        if (round < dna.elements.Count)
+        {
+            // If the location given by the DNA is valid
+            Debug.Log(SurvivalModeManager.instance.mapManager.IsMoveValid(mapPosition, dna.elements[round].direction));
+            if (SurvivalModeManager.instance.mapManager.IsMoveValid(mapPosition, dna.elements[round].direction))
+                return new PositionDirection(MapManager.MovePosition(mapPosition, dna.elements[round].direction), dna.elements[round].direction);
+
+            PositionDirection ret = SurvivalModeManager.instance.mapManager.GetNextPosition(mapPosition, direction);
+            dna.elements[round] = new DNAElement(1, ret.direction);
+            return ret;
+        }
+        else
+        {
+            PositionDirection ret = SurvivalModeManager.instance.mapManager.GetNextPosition(mapPosition, direction);
+            dna.elements.Add(new DNAElement(1, ret.direction));
+            return ret;
+        }
+    }
+
     public void Reset(DNA dna, Vector2Int position)
     {
         spriteAnimator.Play("Ork2Wait");
 
-        // Ressetting target position
+        // Resetting target position
         this.mapTarget = position;
         Vector3 imprecision = new Vector3(Random.Range(-SurvivalModeManager.instance.mapManager.tilemap.cellSize.x / 4, SurvivalModeManager.instance.mapManager.tilemap.cellSize.x / 4),
                                           Random.Range(-SurvivalModeManager.instance.mapManager.tilemap.cellSize.y / 4, SurvivalModeManager.instance.mapManager.tilemap.cellSize.y / 4), 0);

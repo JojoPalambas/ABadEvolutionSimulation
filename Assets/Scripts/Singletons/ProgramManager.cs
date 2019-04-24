@@ -15,6 +15,9 @@ public class ProgramManager : MonoBehaviour
     public GameObject survivalModeManagerPrefab;
     public Tilemap survivalTileMap;
 
+    public RoundDisplayer maxRoundDisplay;
+    public RoundDisplayer roundDisplay;
+
     public static ProgramManager instance;
 
     private Status status;
@@ -74,6 +77,8 @@ public class ProgramManager : MonoBehaviour
             CameraManager.instance.ChangeProgramStatus(status);
 
         survivalModeManagerPrefab.GetComponent<SurvivalModeManager>().tilemap = survivalTileMap;
+        survivalModeManagerPrefab.GetComponent<SurvivalModeManager>().maxRoundDisplay = maxRoundDisplay;
+        survivalModeManagerPrefab.GetComponent<SurvivalModeManager>().roundDisplay = roundDisplay;
         GameObject survivalModeManager = Instantiate(survivalModeManagerPrefab, new Vector3(), new Quaternion());
         /*
         if (survivalModeManager != null)

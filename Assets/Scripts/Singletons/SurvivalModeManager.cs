@@ -24,6 +24,9 @@ public class SurvivalModeManager : MonoBehaviour
 
     private int round;
 
+    public RoundDisplayer maxRoundDisplay;
+    public RoundDisplayer roundDisplay;
+
     public static SurvivalModeManager instance;
 
     // Start is called before the first frame update
@@ -56,6 +59,10 @@ public class SurvivalModeManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        roundDisplay.SetDisplay(round);
+        if (round > maxRoundDisplay.round)
+            maxRoundDisplay.SetDisplay(round);
+
         // Checks if there is something to do, or if waiting is just fine
         if (waitingTime <= 0f)
         {
@@ -182,6 +189,7 @@ public class SurvivalModeManager : MonoBehaviour
     public void Remove()
     {
         Cleanup();
+        roundDisplay.SetDisplay(0);
         instance = null;
         Destroy(gameObject);
     }

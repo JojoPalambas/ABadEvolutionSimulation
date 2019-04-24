@@ -125,6 +125,10 @@ public class MapManager
 
     public bool IsMoveValid(Vector2Int position, Direction direction)
     {
+        // Important for randomization
+        if (direction == Direction.none)
+            return false;
+
         return IsTileValid(MovePosition(position, direction));
     }
 

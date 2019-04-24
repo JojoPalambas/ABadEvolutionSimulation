@@ -9,7 +9,7 @@ public abstract class SurvivalModeConstants
     public static readonly float animationTime = .25f;
     public static readonly float endingTime = 3f;
 
-    public static readonly int mouseHp = 5;
+    public static readonly int mouseHp = 10;
 
     public static readonly int miceNumber = 100;
     public static readonly Vector2Int miceStartingPosition = new Vector2Int(0, 0);

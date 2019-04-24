@@ -152,7 +152,6 @@ public class Mouse : MonoBehaviour
         if (round < dna.elements.Count)
         {
             // If the location given by the DNA is valid
-            Debug.Log(SurvivalModeManager.instance.mapManager.IsMoveValid(mapPosition, dna.elements[round].direction));
             if (SurvivalModeManager.instance.mapManager.IsMoveValid(mapPosition, dna.elements[round].direction))
                 return new PositionDirection(MapManager.MovePosition(mapPosition, dna.elements[round].direction), dna.elements[round].direction);
 
@@ -185,5 +184,15 @@ public class Mouse : MonoBehaviour
 
         hp = SurvivalModeConstants.mouseHp;
         this.dna = dna.DeepCopy();
+        RandomizeDNA();
+    }
+
+    public void RandomizeDNA()
+    {
+        foreach (DNAElement e in dna.elements)
+        {
+            if (Random.Range(0f, 1f) < e.strength / dna.totalStrength)
+                e.direction = MapManager.Direction.none;
+        }
     }
 }

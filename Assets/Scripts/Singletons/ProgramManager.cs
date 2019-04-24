@@ -57,6 +57,8 @@ public class ProgramManager : MonoBehaviour
         {
             SurvivalModeManager.instance.Remove();
         }
+        maxRoundDisplay.SetDisplay(0);
+        roundDisplay.SetDisplay(0);
     }
 
     public void MainMenu()

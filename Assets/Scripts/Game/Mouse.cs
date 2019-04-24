@@ -57,10 +57,12 @@ public class Mouse : MonoBehaviour
     public int hp;
     public DNA dna;
 
+    public Animator spriteAnimator;
+
     // Start is called before the first frame update
     void Start()
     {
-        hp = 10;
+        hp = SurvivalModeConstants.mouseHp;
         timeToTarget = -1f;
     }
 
@@ -79,6 +81,8 @@ public class Mouse : MonoBehaviour
         if (IsDead())
             return;
 
+        spriteAnimator.Play("Ork2Walk");
+
         this.mapTarget = target;
         Vector3 imprecision = new Vector3(Random.Range(-SurvivalModeManager.instance.mapManager.tilemap.cellSize.x / 4, SurvivalModeManager.instance.mapManager.tilemap.cellSize.x / 4),
                                           Random.Range(-SurvivalModeManager.instance.mapManager.tilemap.cellSize.y / 4, SurvivalModeManager.instance.mapManager.tilemap.cellSize.y / 4), 0);
@@ -89,11 +93,13 @@ public class Mouse : MonoBehaviour
         if (dna == null)
             dna = new DNA(new List<DNAElement>());
         dna.elements.Add(new DNAElement(1, direction));
-        Debug.Log(dna.elements.Count);
     }
 
     public void FixPositionToTarget()
     {
+        if (!IsDead())
+            spriteAnimator.Play("Ork2Wait");
+
         this.mapPosition = mapTarget;
         this.transform.position = worldTarget;
         this.timeToTarget = -1f;
@@ -106,12 +112,23 @@ public class Mouse : MonoBehaviour
 
     public void Die()
     {
+        if (IsDead())
+            return;
+
+        spriteAnimator.Play("Ork2Burn");
+
         hp = -1;
     }
 
-    public void hurt(int damage)
+    public void Hurt(int damage)
     {
+        if (IsDead())
+            return;
+
         hp -= damage;
+
+        if (IsDead())
+            spriteAnimator.Play("Ork2Poison");
     }
 
     public Vector2Int GetMapPosition()
@@ -121,6 +138,8 @@ public class Mouse : MonoBehaviour
 
     public void Reset(DNA dna, Vector2Int position)
     {
+        spriteAnimator.Play("Ork2Wait");
+
         // Ressetting target position
         this.mapTarget = position;
         Vector3 imprecision = new Vector3(Random.Range(-SurvivalModeManager.instance.mapManager.tilemap.cellSize.x / 4, SurvivalModeManager.instance.mapManager.tilemap.cellSize.x / 4),

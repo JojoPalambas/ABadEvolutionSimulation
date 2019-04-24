@@ -22,6 +22,8 @@ public class SurvivalModeManager : MonoBehaviour
     private Status status;
     private float waitingTime;
 
+    private int round;
+
     public static SurvivalModeManager instance;
 
     // Start is called before the first frame update
@@ -38,6 +40,7 @@ public class SurvivalModeManager : MonoBehaviour
 
         status = Status.starting;
         waitingTime = SurvivalModeConstants.startingTime;
+        round = 0;
 
         mice = new List<Mouse>();
         for (int i = 0; i < SurvivalModeConstants.miceNumber; i++)
@@ -66,6 +69,7 @@ public class SurvivalModeManager : MonoBehaviour
             }
             if (status == Status.waitingForAnimations)
             {
+                round++;
                 FixMicePositions();
                 HurtMice();
                 if (HasGameEnded())
@@ -128,7 +132,7 @@ public class SurvivalModeManager : MonoBehaviour
             if (tile == MapManager.TileType.lava)
                 mouse.Die();
             else if (tile == MapManager.TileType.spikes)
-                mouse.hurt(1);
+                mouse.Hurt(1);
         }
     }
 
@@ -176,5 +180,10 @@ public class SurvivalModeManager : MonoBehaviour
         Cleanup();
         instance = null;
         Destroy(gameObject);
+    }
+
+    public int GetRound()
+    {
+        return round;
     }
 }
